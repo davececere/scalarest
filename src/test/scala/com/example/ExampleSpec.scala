@@ -1,7 +1,6 @@
 package com.example
 
 import org.specs._
-
 import dispatch._
 
 object ExampleSpec extends Specification with unfiltered.spec.jetty.Served {

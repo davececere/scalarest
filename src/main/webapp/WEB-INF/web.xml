@@ -4,11 +4,11 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd">
 <web-app>
   <filter>
-    <filter-name>App</filter-name>
-    <filter-class>com.example.App</filter-class>
+    <filter-name>DemoObject</filter-name>
+    <filter-class>com.cecere.examples.scala.plan.DemoObjectPlan</filter-class>
   </filter>
   <filter-mapping>
-    <filter-name>App</filter-name>
+    <filter-name>DemoObject</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 </web-app>

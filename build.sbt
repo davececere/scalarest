@@ -11,6 +11,9 @@ libraryDependencies ++= Seq(
    "javax.servlet" % "servlet-api" % "2.3" % "provided",
    "org.eclipse.jetty" % "jetty-webapp" % "7.4.5.v20110725" % "container",
    "org.clapper" %% "avsl" % "0.4",
+   "net.liftweb" %% "lift-json" % "2.5-M3",
+   "org.squeryl" %% "squeryl" % "0.9.5",
+   "mysql" % "mysql-connector-java" % "5.1.10",
    "net.databinder" %% "unfiltered-spec" % "0.6.4" % "test"
 )
 

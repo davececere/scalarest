@@ -2,8 +2,14 @@ package com.example
 
 import unfiltered.request._
 import unfiltered.response._
-
 import org.clapper.avsl.Logger
+import unfiltered.request.QParams.int
+import unfiltered.request.QParams.lookup
+import unfiltered.request.QParams.nonempty
+import unfiltered.request.QParams.pred
+import unfiltered.request.QParams.queryOrElse
+import unfiltered.request.QParams.required
+import unfiltered.request.QParams.trimmed
 
 /** unfiltered plan */
 class App extends unfiltered.filter.Plan {
