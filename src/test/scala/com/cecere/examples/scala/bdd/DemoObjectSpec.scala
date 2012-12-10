@@ -9,6 +9,7 @@ import net.liftweb.json.Serialization
 import net.liftweb.json.ShortTypeHints
 import java.io.InputStreamReader
 import org.apache.http.client.methods.HttpPost
+import unfiltered.request.QParams.Fail
 
 //<< = post
 //<<< = put
@@ -27,6 +28,7 @@ object DemoObjectPlanSpec extends Specification
     "serve list of demo objects" in {
       val status = http x (host / "demoObjects" as_str) {
         case (code, _, _, _) => code
+        case _ => Fail
       }
       status must_== 200
       demoObjectService.deleteAll
@@ -42,6 +44,7 @@ object DemoObjectPlanSpec extends Specification
         	val retObj:DemoObject = Serialization.read(new InputStreamReader(json.getContent()))
         	retObj.name must_== "test"
         }
+        case _ => Fail
       }
       demoObjectService.deleteAll
     }
@@ -56,6 +59,7 @@ object DemoObjectPlanSpec extends Specification
         	val retObj:DemoObject = Serialization.read(new InputStreamReader(json.getContent()))
         	retObj.name must_== "test"
         }
+        case _ => Fail
       }
       demoObjectService.deleteAll
     }
@@ -71,6 +75,7 @@ object DemoObjectPlanSpec extends Specification
         	val retObj:DemoObject = Serialization.read(new InputStreamReader(json.getContent()))
         	retObj.name must_== "testupdated"
         }
+        case _ => Fail
       }
       demoObjectService.deleteAll
     }
@@ -84,6 +89,7 @@ object DemoObjectPlanSpec extends Specification
         	code must_== 204
         	demoObjectService.find(1) must_== None
         }
+        case _ => Fail
       }
       demoObjectService.deleteAll
     }

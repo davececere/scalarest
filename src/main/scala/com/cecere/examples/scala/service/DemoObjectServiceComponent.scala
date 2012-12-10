@@ -7,7 +7,7 @@ import org.squeryl.dsl.ast.LogicalBoolean
  * See the Cake Pattern for a description of why the code looks like this
  */
 
-//Trait defining an service component for DemoObjects to be used by other objects
+//Trait defining an service component for DemoObjects to be used by other components
 trait DemoObjectServiceComponent {
   //internal demo service accessible by this component
   //allows for DI of the actual service implementation into the component
@@ -23,25 +23,7 @@ trait DemoObjectServiceComponent {
   }
 }
 
-//Implementation trait.
-trait DefaultDemoObjectServiceComponent extends DemoObjectServiceComponent {
-
-  def demoObjectService = new DefaultDemoObjectService
-
-  class DefaultDemoObjectService extends DemoObjectService {
-    def findAll:List[DemoObject] = {
-      val demoObject = new DemoObject(1L,"demoObject1")
-      demoObject :: Nil
-    }
-    def find(id:Long):Option[DemoObject] =  Some(new DemoObject(id,"demoObject"+id))
-    def create(newObj:DemoObject):DemoObject = newObj
-    def update(id:Long,newObj:DemoObject) = newObj
-    def delete(id:Long) ={}
-    def deleteAll() = {}
-  }
-}
-
-//Implementation trait.
+//Implementation trait using squeryl dsl
 trait DbDemoObjectServiceComponent extends DemoObjectServiceComponent {
 
   import org.squeryl.SessionFactory
@@ -50,17 +32,23 @@ trait DbDemoObjectServiceComponent extends DemoObjectServiceComponent {
   
   def demoObjectService = new DbDemoObjectService
   
+  //runs just during initialization of instance. Typical squeryl initialization code
   Class.forName("com.mysql.jdbc.Driver");
   SessionFactory.concreteFactory = Some( ()=>  
   	Session.create(java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3306/scalarest","root",""),new MySQLAdapter)
   )
-
+  /*
+   * Actual implementation of the service that will be injected via mixing in the parent component
+   */
   class DbDemoObjectService extends DemoObjectService {
     import com.cecere.examples.scala.squeryl.SchemaLibrary._
     import org.squeryl.PrimitiveTypeMode._
     
     def findAll:List[DemoObject] = {
+      //will create or join current transaction
       inTransaction {
+        //the squeryl dsl using scala paradigms to create database queries
+        //this is a typical way to apply an anonymous function to a collection
         from(demoObjects)(s => select(s)).toList
       }
     }
@@ -81,6 +69,7 @@ trait DbDemoObjectServiceComponent extends DemoObjectServiceComponent {
     	    where(dObj.id === id)
     	    set(dObj.name := newObj.name)
     	  )
+    	  //get updated result
     	  find(id).get
       }
     }
@@ -91,7 +80,7 @@ trait DbDemoObjectServiceComponent extends DemoObjectServiceComponent {
     }
     def deleteAll() = {
       inTransaction {
-        //not possible equality. ids start at 1
+        //not possible equality. ids start at 1. this was the easiest way i could find to do this
         demoObjects.deleteWhere(dObj => dObj.id <> -1)
       }
     }
