@@ -12,6 +12,7 @@ trait DemoObjectServiceComponent {
   //internal demo service accessible by this component
   //allows for DI of the actual service implementation into the component
   def demoObjectService: DemoObjectService
+}
   //definition of what the internal service does
   trait DemoObjectService {
     def findAll: List[DemoObject]
@@ -21,7 +22,6 @@ trait DemoObjectServiceComponent {
     def delete(id:Long):Unit
     def deleteAll():Unit
   }
-}
 
 //Implementation trait using squeryl dsl
 trait DbDemoObjectServiceComponent extends DemoObjectServiceComponent {

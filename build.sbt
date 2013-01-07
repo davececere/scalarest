@@ -14,7 +14,11 @@ libraryDependencies ++= Seq(
    "net.liftweb" %% "lift-json" % "2.5-M3",
    "org.squeryl" %% "squeryl" % "0.9.5",
    "mysql" % "mysql-connector-java" % "5.1.10",
-   "net.databinder" %% "unfiltered-spec" % "0.6.4" % "test"
+   "net.databinder" %% "unfiltered-spec" % "0.6.4" % "test",
+   "junit" % "junit" % "4.8.1" % "test",
+   // so that sbt will find plain old junit scala test classes
+   "com.novocode" % "junit-interface" % "0.10-M2" % "test",
+   "org.easymock" % "easymock" % "2.5" % "test"
 )
 
 seq(webSettings :_*)
