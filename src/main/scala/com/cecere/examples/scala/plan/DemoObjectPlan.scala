@@ -5,30 +5,14 @@ import javax.servlet.ServletRequest
 import org.clapper.avsl.Logger
 import unfiltered.request._
 import unfiltered.response._
-import com.cecere.examples.scala.service.DemoObjectServiceComponent
 import net.liftweb.json._
 import com.cecere.examples.scala.domain.DemoObject
-import com.cecere.examples.scala.service.DbDemoObjectServiceComponent
+import com.cecere.examples.scala.service.DemoObjectService
+import com.cecere.examples.scala.service.DbDemoObjectService
 
-/* this is our implementation class which extends our base plan and mixes in its 
- * single dependency. See the "Cake Pattern" for this style of DI.
- * 
- * Look in web.xml to see how this is added as a servlet filter so it can intercept
- * requests
- */
-class DemoObjectPlan extends BaseDemoObjectPlan with DbDemoObjectServiceComponent {
-}
-
-//A Plan that has a dependency on members of DemoObjectServiceComponent
-class BaseDemoObjectPlan extends Plan {
-  this: DemoObjectServiceComponent =>
-
-  /* this is a bit magical. see scala implicits for full description
-   * in short, the Serialization functions below look for ways to format json and find this
-   * definition within scope for use in doing that work.
-   */
-  implicit val formats=Serialization.formats(ShortTypeHints(List(classOf[DemoObject])))
-  val logger = Logger(classOf[BaseDemoObjectPlan])
+//A Plan that has a dependency on DemoObjectService
+class DemoObjectPlan(implicit val demoObjectService:DemoObjectService,implicit val formats:Formats) extends Plan {
+  val logger = Logger(classOf[DemoObjectPlan])
  
   /*
    * We first match the request by path using match{case} expressions.

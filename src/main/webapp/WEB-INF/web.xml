@@ -5,7 +5,7 @@
 <web-app>
   <filter>
     <filter-name>DemoObject</filter-name>
-    <filter-class>com.cecere.examples.scala.plan.DemoObjectPlan</filter-class>
+    <filter-class>com.cecere.examples.scala.plan.wired.WiredDemoObjectPlan</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>DemoObject</filter-name>

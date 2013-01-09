@@ -3,24 +3,27 @@ package com.example
 import org.specs._
 import dispatch._
 import com.cecere.examples.scala.plan.DemoObjectPlan
-import com.cecere.examples.scala.service.DbDemoObjectServiceComponent
 import com.cecere.examples.scala.domain.DemoObject
 import net.liftweb.json.Serialization
 import net.liftweb.json.ShortTypeHints
 import java.io.InputStreamReader
 import org.apache.http.client.methods.HttpPost
 import unfiltered.request.QParams.Fail
+import com.cecere.examples.scala.plan.wired.WiredDemoObjectPlan
+
+//special import that allows usage of any implicit objects within the database configuration module (ie. demoObjectService)
+import com.cecere.examples.scala.conf.DatabaseConfiguration._
 
 //<< = post
 //<<< = put
 object DemoObjectPlanSpec extends Specification 
-	with unfiltered.spec.jetty.Served 
-	with DbDemoObjectServiceComponent {
+	with unfiltered.spec.jetty.Served {
   
   import dispatch._
+  
   implicit val formats=Serialization.formats(ShortTypeHints(List(classOf[DemoObject])))
   
-  def setup = { _.filter(new DemoObjectPlan) }
+  def setup = { _.filter(new WiredDemoObjectPlan) } //use wired object for test since that is the plan that is really used in web.xml
   
   val http = new Http
   

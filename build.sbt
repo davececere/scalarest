@@ -18,7 +18,7 @@ libraryDependencies ++= Seq(
    "junit" % "junit" % "4.8.1" % "test",
    // so that sbt will find plain old junit scala test classes
    "com.novocode" % "junit-interface" % "0.10-M2" % "test",
-   "org.easymock" % "easymock" % "2.5" % "test"
+   "org.easymock" % "easymock" % "3.1" % "test"
 )
 
 seq(webSettings :_*)
