@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+
+<HTML>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Demo Objects</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile.structure-1.2.0.min.css" />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+
+<script type="text/javascript">
+//the jquery mobile recommendation is to use live('pageinit') instead of document.ready
+$('#showobject').live( 'pageinit',function(event) {
+  var query = window.location.search;
+  query = query.replace("?id=","");
+  var idUrl = "/demoObjects/"+query;
+  $.getJSON(idUrl, function(data) {
+    $('#name').val(data.name);
+    $('#id').val(data.id);
+  });
+  
+  $("#submit").click(function(event) {
+    event.preventDefault();
+    var demoObj = { id : Number($('#id').val()), name: $('#name').val() };
+    $.ajax({
+        type: "PUT",
+        url: "/demoObjects/"+$('#id').val(),
+        cache: false,
+        data: JSON.stringify(demoObj),
+        contentType: "application/json; charset=utf-8",
+        success: function(data) {
+			//redisplay?
+        },
+        error: function() { 
+          // server couldn't be reached or other error 
+        }
+    });
+  });
+});
+
+</script>
+</head>
+
+<body>
+
+<div id="showobject" data-role="page" data-add-back-btn="true">
+
+<div data-role="header"><h1> Demo Object</h1></div>
+
+<div data-role="content">
+<!-- turn off default ajax so we can use json -->
+<form method="PUT" id="objectform" data-ajax="false">
+<label for="basic">Name:</label>
+<input type="number" name="id" id="id"/>
+<input type="text" name="name" id="name"/>
+<button id="submit" type="submit" data-theme="a">Submit</button>
+</form>
+<div id="object"/>
+
+</div>
+
+</div><!-- /page -->
+
+</body>
+
+</HTML>

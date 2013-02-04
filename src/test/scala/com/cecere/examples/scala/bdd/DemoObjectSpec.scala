@@ -61,6 +61,7 @@ object DemoObjectPlanSpec extends Specification
         	code must_== 201 
         	val retObj:DemoObject = Serialization.read(new InputStreamReader(json.getContent()))
         	retObj.name must_== "test"
+        	retObj.id must_!= 0
         }
         case _ => Fail
       }
